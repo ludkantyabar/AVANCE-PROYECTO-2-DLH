@@ -1,19 +1,84 @@
-name: Jekyll site CI
+name: Integración y entrega continua
 
 on:
   push:
     branches: [ "main" ]
- 
+  workflow_dispatch:
 
 jobs:
   build:
-
+    name: Construcción y Despliegue
     runs-on: ubuntu-latest
+    
+    env:
+      nombres: Ludkant Ronald
+      apellidos: Yabar Galindo
+      edad: 37
 
+      user: ${{secrets.USER}}
+      password: ${{secrets.PASSWORD}}
+    
     steps:
-    - uses: actions/checkout@v4
-    - name: Build the site in the jekyll/builder container
-      run: |
-        docker run \
-        -v ${{ github.workspace }}:/srv/jekyll -v ${{ github.workspace }}/_site:/srv/jekyll/_site \
-        jekyll/builder:latest /bin/bash -c "chmod -R 777 /srv/jekyll && jekyll build --future"
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+      
+      - name: presentación
+        run: |
+          echo "=================================="
+          echo "   INFORMACIÓN PERSONAL"
+          echo "=================================="
+          echo "Nombres: ${{ env.nombres }}"
+          echo "Apellidos: ${{ env.apellidos }}"
+          echo "Edad: ${{ env.edad }}"
+          echo "=================================="
+      
+      - name: datos generales
+        run: |
+          echo ""
+          echo "=================================="
+          echo "   INFORMACIÓN ACADÉMICA"
+          echo "=================================="
+          echo "Carrera: Ingeniería de Sistemas"
+          echo "=================================="
+      
+      - name: variables de entorno secretas
+        run: |
+          echo ""
+          echo "=================================="
+          echo "   DATOS DE ACCESO"
+          echo "=================================="
+          echo "Usuario: ${{ env.user }}"
+          echo "Password: ${{ env.password }}"
+          echo "=================================="
+
+      - name: variables abiertas
+        run: |
+          echo ""
+          echo "=================================="
+          echo "   VARIABLES DE CONFIGURACIÓN"
+          echo "=================================="
+          echo "versión de mi proyecto: ${{ vars.version_de_mi_proyecto}}"
+          echo "=================================="
+
+      - name: variables abiertas 2
+        env:
+          VERSION_PROYECTO: ${{ vars.version_de_mi_proyecto }}
+        run: |
+          echo ""
+          echo "=================================="
+          echo "   VARIABLES DE CONFIGURACIÓN"
+          echo "=================================="
+          echo "versión de mi proyecto: $VERSION_PROYECTO"
+          echo "=================================="
+      
+      - name: Resumen de ejecución
+        run: |
+          echo ""
+          echo "=================================="
+          echo "   RESUMEN DE EJECUCIÓN"
+          echo "=================================="
+          echo "✓ Workflow ejecutado exitosamente"
+          echo "✓ Sistema Operativo: Ubuntu Linux"
+          echo "✓ Rama: main"
+          echo "✓ Fecha: $(date +'%d/%m/%Y %H:%M:%S')"
+          echo "=================================="
